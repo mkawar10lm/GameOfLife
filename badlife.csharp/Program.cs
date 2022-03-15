@@ -8,7 +8,7 @@ namespace badlife.csharp
     {
         static void Main(string[] args)
         {
-            var input = new StreamReader("sample_input.txt");//"D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\sample_input.txt.txt"
+            var input = new StreamReader("D:/DC/GitHubProjects/GameOfLife/GameOfLife/badlife.csharp/sample_input.txt");
             var allText = input.ReadToEnd();
             var lines = allText.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
