@@ -1,0 +1,16 @@
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\obj\Debug\net5.0\badlife.csharp.GeneratedMSBuildEditorConfig.editorconfig
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\obj\Debug\net5.0\badlife.csharp.AssemblyInfoInputs.cache
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\obj\Debug\net5.0\badlife.csharp.AssemblyInfo.cs
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\obj\Debug\net5.0\badlife.csharp.csproj.CoreCompileInputs.cache
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\bin\Debug\net5.0\badlife.csharp.exe
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\bin\Debug\net5.0\badlife.csharp.deps.json
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\bin\Debug\net5.0\badlife.csharp.runtimeconfig.json
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\bin\Debug\net5.0\badlife.csharp.runtimeconfig.dev.json
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\bin\Debug\net5.0\badlife.csharp.dll
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\bin\Debug\net5.0\ref\badlife.csharp.dll
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\bin\Debug\net5.0\badlife.csharp.pdb
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\obj\Debug\net5.0\badlife.csharp.dll
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\obj\Debug\net5.0\ref\badlife.csharp.dll
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\obj\Debug\net5.0\badlife.csharp.pdb
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\obj\Debug\net5.0\badlife.csharp.genruntimeconfig.cache
+D:\DC\GitHubProjects\GameOfLife\GameOfLife\badlife.csharp\obj\Debug\net5.0\badlife.csharp.csproj.AssemblyReference.cache
