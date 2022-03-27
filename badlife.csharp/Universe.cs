@@ -51,7 +51,6 @@ namespace badlife.csharp
         }
         private static CellState[,] CreateTheIntialUnivese(string stringRepOfUniverse)
         {
-            //string allText = input.ReadToEnd();
             string[] lines = SplitIntoRows(stringRepOfUniverse);
             CellState[,] currentStateOfWorld = SplitIntoCells(lines);
             return currentStateOfWorld;

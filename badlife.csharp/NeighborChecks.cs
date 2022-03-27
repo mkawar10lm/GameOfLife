@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace badlife.csharp
 {
@@ -17,48 +18,45 @@ namespace badlife.csharp
         public List<CellState.cellstates> NeighborStates(int iterationRows, int iterationCols)
         {
             var neighborCellStates = new List<CellState.cellstates>();
-            neighborCellStates.Add(AboveLeftNeighborCheck(iterationRows, iterationCols));
-            neighborCellStates.Add(AboveNeighborCheck(iterationRows, iterationCols));
-            neighborCellStates.Add(AboveRightNeighborCheck(iterationRows, iterationCols));
-            neighborCellStates.Add(LeftNeighborCheck(iterationRows, iterationCols));
-            neighborCellStates.Add(RightNeighborCheck(iterationRows, iterationCols));
-            neighborCellStates.Add(BelowLeftNeighborCheck(iterationRows, iterationCols));
-            neighborCellStates.Add(BelowNeighborCheck(iterationRows, iterationCols));
-            neighborCellStates.Add(BelowRightNeighborCheck(iterationRows, iterationCols));
+            var neighborCoordinates = CoordinatesOfNeighbors(iterationRows, iterationCols);
+
+            foreach (var iterTuple in neighborCoordinates)
+            {
+                neighborCellStates.Add(cells[iterTuple.Item1, iterTuple.Item2].State);
+            }
             return neighborCellStates;
         }
-        public CellState.cellstates AboveLeftNeighborCheck(int iterationRows, int iterationCols)
+
+        public List<Tuple<int, int>> CoordinatesOfNeighbors(int iterationRows, int iterationCols)
         {
-            return cells[iterationRows - 1 < 0 ? maxRows - 1 : iterationRows - 1, iterationCols - 1 < 0 ? maxColumns - 1 : iterationCols - 1].State;
-        }
-        public CellState.cellstates AboveNeighborCheck(int iterationRows, int iterationCols)
-        {
-            return cells[iterationRows - 1 < 0 ? maxRows - 1 : iterationRows - 1, iterationCols].State;
-        }
-        public CellState.cellstates AboveRightNeighborCheck(int iterationRows, int iterationCols)
-        {
-            return cells[iterationRows - 1 < 0 ? maxRows - 1 : iterationRows - 1, iterationCols + 1 == maxColumns ? 0 : iterationCols + 1].State;
-        }
-        public CellState.cellstates LeftNeighborCheck(int iterationRows, int iterationCols)
-        {
-            return cells[iterationRows, iterationCols - 1 < 0 ? maxColumns - 1 : iterationCols - 1].State;
-        }
-        public CellState.cellstates RightNeighborCheck(int iterationRows, int iterationCols)
-        {
-            return cells[iterationRows,iterationCols + 1 == maxColumns ? 0 : iterationCols + 1].State;
-        }
-        public CellState.cellstates BelowLeftNeighborCheck(int iterationRows, int iterationCols)
-        {
-            return cells[iterationRows + 1 == maxRows ? 0 : iterationRows + 1, iterationCols - 1 < 0 ? maxColumns - 1 : iterationCols - 1].State;
+            return new List<Tuple<int, int>>()
+            {
+                new Tuple<int, int>(AboveCellRowCheck(iterationRows), LeftCellColumnCheck(iterationCols)),
+                new Tuple<int, int>(AboveCellRowCheck(iterationRows), iterationCols),
+                new Tuple<int, int>(AboveCellRowCheck(iterationRows), RightCellColumnCheck(iterationCols)),
+                new Tuple<int, int>(iterationRows, LeftCellColumnCheck(iterationCols)),
+                new Tuple<int, int>(iterationRows, RightCellColumnCheck(iterationCols)),
+                new Tuple<int, int>(BelowCellRowCheck(iterationRows), LeftCellColumnCheck(iterationCols)),
+                new Tuple<int, int>(BelowCellRowCheck(iterationRows), iterationCols),
+                new Tuple<int, int>(BelowCellRowCheck(iterationRows), RightCellColumnCheck(iterationCols))
+            };
         }
 
-        public CellState.cellstates BelowNeighborCheck(int iterationRows, int iterationCols)
+        public int AboveCellRowCheck(int iterationRows)
         {
-            return cells[iterationRows + 1 == maxRows ? 0 : iterationRows + 1,iterationCols].State;
+            return iterationRows - 1 < 0 ? maxRows - 1 : iterationRows - 1;
         }
-        public CellState.cellstates BelowRightNeighborCheck(int iterationRows, int iterationCols)
+        public int BelowCellRowCheck(int iterationRows)
         {
-            return cells[iterationRows + 1 == maxRows ? 0 : iterationRows + 1, iterationCols + 1 == maxColumns ? 0 : iterationCols + 1].State;
+            return iterationRows + 1 == maxRows ? 0 : iterationRows + 1;
+        }
+        public int LeftCellColumnCheck(int iterationCols)
+        {
+            return iterationCols - 1 < 0 ? maxColumns - 1 : iterationCols - 1;
+        }
+        public int RightCellColumnCheck(int iterationCols)
+        {
+            return iterationCols + 1 == maxColumns ? 0 : iterationCols + 1;
         }
     }
 }
