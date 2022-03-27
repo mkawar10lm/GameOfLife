@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "badlife.csharp", "badlife.csharp.csproj", "{FC4FC104-2E5C-4C93-A9B0-D9D2BB914B8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "..\TestProject1\TestProject1.csproj", "{825D23B8-296E-4091-89F6-FFA10782050C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOfLifeTestProject", "..\TestProject1\GameOfLifeTestProject.csproj", "{825D23B8-296E-4091-89F6-FFA10782050C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

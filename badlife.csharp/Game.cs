@@ -1,75 +1,103 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace badlife.csharp
 {
-    class Game
+    public class Game
     {
-        private Grid universe;
+        private Universe universe;
         private MaxGames maxGames;
 
-        public Game(Grid universe, MaxGames maxGames)
+        public Game(Universe universe, MaxGames maxGames)
         {
             this.universe = universe;
-            this.maxGames = maxGames
+            this.maxGames = maxGames;
         }
 
-        public void PlayGame()
+        public string PlayGame()
         {
             int numberOfGames = maxGames.getMaxNumberOfGames();
+            
+            Universe nextGeneration = NextGeneration(universe);
 
-            for (int i = 0; i <= numberOfGames; i++)
+            for (int i = 2; i <= numberOfGames; i++)
             {
-                for (var iterationRows = 0; iterationRows < universe.getHeight(); ++iterationRows)
+                nextGeneration = NextGeneration(nextGeneration);
+            }
+            return nextGeneration.ConvertUniverseToString();
+        }
+        private Universe NextGeneration(Universe universe)
+        {
+            Universe nextGeneration = new Universe(universe.GetHeight(), universe.GetWidth());
+
+            for (var iterationRows = 0; iterationRows < universe.GetHeight(); ++iterationRows)
+            {
+                for (var iterationCols = 0; iterationCols < universe.GetWidth(); ++iterationCols)
                 {
-                    for (var iterationCols = 0; iterationCols < universe.getWidth(); ++iterationCols)
+                    bool isWorldActive = IsAnyMemberAlive(universe);
+                    if (isWorldActive)
                     {
-                        bool isWorldStagnant = universe.GetUniverse().Where(xcoordinate => xcoordinate.Where(ycoordinate => ycoordinate.State == CellState.cellstates.LIVE_CELL).Any();
-                        if (isWorldStagnant)
-                        {
-                            Evolve(iterationRows, iterationCols);
-                        }
+                        SetCell(iterationRows, iterationCols, Evolve(iterationRows, iterationCols, universe), nextGeneration);
                     }
                 }
             }
-            universe.ConvertUniverseToString();
+            return nextGeneration;
         }
-        public void Evolve(int rowIndex, int columnIndex)
+        
+        private CellState Evolve(int rowIndex, int columnIndex, Universe universe)
         {
-            int neighbors = universe.getLiveNeighboursAt(rowIndex, columnIndex);
+            int neighbors = universe.GetLiveNeighboursAt(rowIndex, columnIndex);
 
-            bool isCellAlive = CellState.isCellAlive(getCellAt(rowIndex, columnIndex));
+            bool isCellAlive = CellState.IsCellAlive(GetCellAt(rowIndex, columnIndex));
 
             if (isCellAlive)
             {
                 if (neighbors < 2)
                 {
-                    setCellAt(rowIndex, columnIndex, '_');
+                    return CellState.FromSymbol(CellState.GetDeadCellSymbol());
                 }
                 if (neighbors == 2 || neighbors == 3)
                 {
-                    setCellAt(rowIndex, columnIndex, '*');
+                    return CellState.FromSymbol(CellState.GetLiveCellSymbol());
                 }
                 if (neighbors > 3)
                 {
-                    setCellAt(rowIndex, columnIndex, '_');
+                    return CellState.FromSymbol(CellState.GetDeadCellSymbol());
+                }
+                else
+                {
+                    return CellState.FromSymbol(CellState.GetDeadCellSymbol());
                 }
             }
             else if (neighbors == 3)
             {
-                setCellAt(rowIndex, columnIndex, '*');
+                return CellState.FromSymbol(CellState.GetLiveCellSymbol());
+            }
+            else 
+            {
+                return CellState.FromSymbol(CellState.GetDeadCellSymbol());
             }
         }
-        public CellState getCellAt(int x, int y)
+        private CellState GetCellAt(int x, int y)
         {
-            return universe.GetUniverse()[y][x];
+            return universe.GetUniverse()[x,y];
         }
-        public void setCellAt(int x, int y, char symbol)
+        public void SetCell(int x, int y, CellState cell, Universe universe)
         {
-            universe.GetUniverse()[y][x] = CellState.fromSymbol(symbol);
+            universe.GetUniverse()[x, y] = cell;
+        }
+
+        private bool IsAnyMemberAlive(Universe universe)
+        {
+            for (int i = 0; i < universe.GetHeight(); i++)
+            {
+                for (int j = 0; j < universe.GetWidth(); j++)
+                {
+                    if (universe.GetUniverse()[i, j].State == CellState.cellstates.ALIVE)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

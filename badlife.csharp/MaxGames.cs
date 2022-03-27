@@ -6,13 +6,13 @@ namespace badlife.csharp
     public class MaxGames
     {
         private int maxGame;
-        public MaxGames(StreamReader maxNumberOfGamesUserInput)
+        public MaxGames(string maxNumberOfGamesString)
         {
-            this.maxGame = makeCellArrayFrom(maxNumberOfGamesUserInput);
+            this.maxGame = gameCount(maxNumberOfGamesString);
         }
-        private int makeCellArrayFrom(StreamReader maxNumberOfGamesUserInput)
+        private int gameCount(string maxNumberOfGamesString)
         {
-            return Int32.Parse(maxNumberOfGamesUserInput.ReadToEnd());
+            return Int32.Parse(maxNumberOfGamesString);
         }
         public int getMaxNumberOfGames()
         {

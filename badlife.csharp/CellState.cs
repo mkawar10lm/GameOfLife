@@ -6,19 +6,16 @@ namespace badlife.csharp
     {
         public enum cellstates
         {
-            LIVE_CELL,
-            DEAD_CELL
+            ALIVE,
+            DEAD
         }
 
         private char symbol;
         private cellstates state;
 
-        public CellState(char initialSymbol)
+        public CellState(char initialSymbol, cellstates state)
         {
             this.symbol = initialSymbol;
-        }
-        public CellState(cellstates state)
-        {
             this.state = state;
         }
         public char Symbol    
@@ -32,18 +29,16 @@ namespace badlife.csharp
             set => state = value;
         }
 
-        public static CellState fromSymbol(char symbol)
+        public static CellState FromSymbol(char symbol)
         {
             CellState cellBySymbol = null;
-            if (symbol.Equals('*'))
+            if (symbol.Equals(GetLiveCellSymbol()))
             {
-                cellBySymbol.state = cellstates.LIVE_CELL;
-                cellBySymbol.symbol = symbol;
+                return new CellState(symbol, cellstates.ALIVE);
             }
-            else if (symbol.Equals('_'))
+            else if (symbol.Equals(GetDeadCellSymbol()))
             {
-                cellBySymbol.state = cellstates.DEAD_CELL;
-                cellBySymbol.symbol = symbol;
+                return new CellState(symbol, cellstates.DEAD);
             }
             else 
             {
@@ -51,9 +46,18 @@ namespace badlife.csharp
             }
             return cellBySymbol;
         }
-        public static bool isCellAlive(CellState cell)
+        public static bool IsCellAlive(CellState cell)
         {
-            return cell.state == cellstates.LIVE_CELL;
+            return cell.state == cellstates.ALIVE;
         }
+        public static char GetDeadCellSymbol()
+        {
+            return '_';
+        }
+        public static char GetLiveCellSymbol()
+        {
+            return '*';
+        }
+
     }
 }
