@@ -9,47 +9,29 @@
 //    {
 //        static void Main(string[] args)
 //        {
-//            leet();
-//            //Reading the intial input for game
 //            var input = new StreamReader("sample_input.txt");
 //            var allText = input.ReadToEnd();
 //            var lines = allText.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-//            // If the input file is empty, the code can be terminated.
-//            // The data checks here can be extended. 
-//            // 1) Check if the files only contain "*" and "_"
-//            // 2) All the lines should have same number of characters. 
+//            var currentStateOfWorld = new Dictionary<int, HashSet<int>>();
 
-//            if (!lines.Any())
-//            {
-//                return;
-//            }
-
-//            // Creating the current state of world with boolean variables
-//            var currentStateOfWorld = new Dictionary<int, bool[]>();
-//            int indexOfLastRow = 0;
-//            int index = 0;
-            
 //            for (int indexOfLines = 0; indexOfLines < lines.Length; ++indexOfLines)
 //            {
-//                if (lines[indexOfLines].Contains("*"))
+//                HashSet<int> indicesOfLiveMembers = new HashSet<int>();
+
+//                for (int indexOfCharacter = 0; indexOfCharacter < lines[indexOfLines].Length; indexOfCharacter++)
 //                {
-//                    if (indexOfLines - indexOfLastRow > 1)
+//                    if (lines[indexOfLines][indexOfCharacter] == '*')
 //                    {
-//                        currentStateOfWorld.Add(index, new bool[lines[indexOfLines].Count()]);
-//                        currentStateOfWorld.Add(index + 1, lines[indexOfLines].Select(x => x.Equals('*')).ToArray());
-//                        index = index + 2;
+//                        indicesOfLiveMembers.Add(indexOfCharacter);
 //                    }
-//                    else
-//                    {
-//                        currentStateOfWorld.Add(index, lines[indexOfLines].Select(x => x.Equals('*')).ToArray());
-//                        index = index + 1;
-//                    }
-//                    indexOfLastRow = indexOfLines;
+//                }
+//                if (indicesOfLiveMembers.Any())
+//                {
+//                    currentStateOfWorld.Add(indexOfLines, indicesOfLiveMembers);
 //                }
 //            }
-
-//            Evolve(currentStateOfWorld);
+//            Dictionary<int, HashSet<int>> newWorld = Evolve(currentStateOfWorld, lines.Length, lines[0].Length);
 
 //            for (int iterationRow = 0; iterationRow < currentStateOfWorld.Count; iterationRow++)
 //            {
@@ -61,36 +43,146 @@
 //                Console.WriteLine(line);
 //            }
 //        }
-//        public static void Evolve(Dictionary<int, bool[]> currentStateOfWorld)
+//        public static Dictionary<int, HashSet<int>> Evolve(Dictionary<int, HashSet<int>> currentStateOfWorld, int maxRows, int maxColumns)
 //        {
-//            var rows = currentStateOfWorld.Count;
-//            var cols = currentStateOfWorld[0].Length;
+//            var newWorld = new Dictionary<int, HashSet<int>>();
 
-//            // The first condition is checking if the game round is less than max number of games
-//            // and the input has atleast one alive cell
-
-//            for (var iterationRows = 0; iterationRows < currentStateOfWorld.Count; ++iterationRows)
+//            for (int iterationRows = 0; iterationRows < maxRows; iterationRows++)
 //            {
-//                for (var iterationCols = 0; iterationCols < currentStateOfWorld[iterationRows].Length; ++iterationCols)
+//                for (int iterationAliveNeighbor = 0; iterationAliveNeighbor < maxColumns; iterationAliveNeighbor++)
 //                {
-//                    //Checking the situation of neighbors
+//                    Checking the situation of neighbors
 //                    int neighbors = 0;
-//                    if (NeighborChecks.AboveLeftNeighborCheck(currentStateOfWorld, iterationRows, rows, iterationCols, cols)) neighbors++;
-//                    if (NeighborChecks.AboveNeighborCheck(currentStateOfWorld, iterationRows, rows, iterationCols)) neighbors++;
-//                    if (NeighborChecks.AboveRightNeighborCheck(currentStateOfWorld, iterationRows, rows, iterationCols, cols)) neighbors++;
-//                    if (NeighborChecks.LeftNeighborCheck(currentStateOfWorld, iterationRows, rows, iterationCols, cols)) neighbors++;
-//                    if (NeighborChecks.RightNeighborCheck(currentStateOfWorld, iterationRows, rows, iterationCols, cols)) neighbors++;
-//                    if (NeighborChecks.BelowLeftNeighborCheck(currentStateOfWorld, iterationRows, rows, iterationCols, cols)) neighbors++;
-//                    if (NeighborChecks.BelowNeighborCheck(currentStateOfWorld, iterationRows, rows, iterationCols, cols)) neighbors++;
-//                    if (NeighborChecks.BelowRightNeighborCheck(currentStateOfWorld, iterationRows, rows, iterationCols, cols)) neighbors++;
+//                    if (AboveLeftNeighborCheck(currentStateOfWorld, iterationRows, maxRows, iterationAliveNeighbor, maxColumns)) neighbors++;
+//                    if (AboveNeighborCheck(currentStateOfWorld, iterationRows, maxRows, iterationAliveNeighbor)) neighbors++;
+//                    if (AboveRightNeighborCheck(currentStateOfWorld, iterationRows, maxRows, iterationAliveNeighbor, maxColumns)) neighbors++;
+//                    if (LeftNeighborCheck(currentStateOfWorld, iterationRows, maxRows, iterationAliveNeighbor, maxColumns)) neighbors++;
+//                    if (RightNeighborCheck(currentStateOfWorld, iterationRows, maxRows, iterationAliveNeighbor, maxColumns)) neighbors++;
+//                    if (BelowLeftNeighborCheck(currentStateOfWorld, iterationRows, maxRows, iterationAliveNeighbor, maxColumns)) neighbors++;
+//                    if (BelowNeighborCheck(currentStateOfWorld, iterationRows, maxRows, iterationAliveNeighbor, maxColumns)) neighbors++;
+//                    if (BelowRightNeighborCheck(currentStateOfWorld, iterationRows, maxRows, iterationAliveNeighbor, maxColumns)) neighbors++;
 
-//                    // Updating the world
-//                    if (currentStateOfWorld[iterationRows][iterationCols] && neighbors < 2) currentStateOfWorld[iterationRows][iterationCols] = false;
-//                    if (currentStateOfWorld[iterationRows][iterationCols] && (neighbors == 2 || neighbors == 3)) currentStateOfWorld[iterationRows][iterationCols] = true;
-//                    if (currentStateOfWorld[iterationRows][iterationCols] && neighbors > 3) currentStateOfWorld[iterationRows][iterationCols] = false;
-//                    if (!currentStateOfWorld[iterationRows][iterationCols] && neighbors == 3) currentStateOfWorld[iterationRows][iterationCols] = true;
+//                    if (currentStateOfWorld.ContainsKey(iterationRows) && currentStateOfWorld[iterationRows].Contains(iterationAliveNeighbor))
+//                    {
+//                        if (neighbors == 2 || neighbors == 3)
+//                        {
+//                            if (newWorld.ContainsKey(iterationRows))
+//                            {
+//                                newWorld[iterationRows].Add(iterationAliveNeighbor);
+//                            }
+//                            else
+//                            {
+//                                newWorld.Add(iterationRows, new HashSet<int> { iterationAliveNeighbor });
+//                            }
+//                        }
+//                    }
+//                    else if (neighbors == 3)
+//                    {
+//                        newWorld.Add(iterationRows, new HashSet<int> { iterationAliveNeighbor });
+//                    }
 //                }
 //            }
+//            return newWorld;
+//        }
+//        public static bool AboveLeftNeighborCheck(Dictionary<int, HashSet<int>> currentStateOfWorld, int iterationRows, int rows, int iterationCols, int cols)
+//        {
+//            var row = AboveCellRowCheck(iterationRows, rows);
+//            var column = LeftCellColumnCheck(iterationCols, cols);
+
+//            if (currentStateOfWorld.ContainsKey(row) && currentStateOfWorld[row].Contains(column))
+//            {
+//                return true;
+//            }
+//            return false;
+//        }
+//        public static bool AboveNeighborCheck(Dictionary<int, HashSet<int>> currentStateOfWorld, int iterationRows, int rows, int iterationCols)
+//        {
+//            var row = AboveCellRowCheck(iterationRows, rows);
+//            if (currentStateOfWorld.ContainsKey(row) && currentStateOfWorld[row].Contains(iterationCols))
+//            {
+//                return true;
+//            }
+//            return false;
+//        }
+//        public static bool AboveRightNeighborCheck(Dictionary<int, HashSet<int>> currentStateOfWorld, int iterationRows, int rows, int iterationCols, int cols)
+//        {
+//            var row = AboveCellRowCheck(iterationRows, rows);
+//            var column = RightCellColumnCheck(iterationCols, cols);
+//            if (currentStateOfWorld.ContainsKey(row) && currentStateOfWorld[row].Contains(column))
+//            {
+//                return true;
+//            }
+//            return false;
+
+//        }
+//        public static bool LeftNeighborCheck(Dictionary<int, HashSet<int>> currentStateOfWorld, int iterationRows, int rows, int iterationCols, int cols)
+//        {
+//            var column = LeftCellColumnCheck(iterationCols, cols);
+//            if (currentStateOfWorld.ContainsKey(iterationRows) && currentStateOfWorld[iterationRows].Contains(column))
+//            {
+//                return true;
+//            }
+//            return false;
+//        }
+//        public static bool RightNeighborCheck(Dictionary<int, HashSet<int>> currentStateOfWorld, int iterationRows, int rows, int iterationCols, int cols)
+//        {
+//            var column = RightCellColumnCheck(iterationCols, cols);
+//            if (currentStateOfWorld.ContainsKey(iterationRows) && currentStateOfWorld[iterationRows].Contains(column))
+//            {
+//                return true;
+//            }
+//            return false;
+//        }
+//        public static bool BelowLeftNeighborCheck(Dictionary<int, HashSet<int>> currentStateOfWorld, int iterationRows, int rows, int iterationCols, int cols)
+//        {
+//            var row = BelowCellRowCheck(iterationRows, rows);
+//            var column = LeftCellColumnCheck(iterationCols, cols);
+
+//            if (currentStateOfWorld.ContainsKey(row) && currentStateOfWorld[row].Contains(column))
+//            {
+//                return true;
+//            }
+//            return false;
+//        }
+
+//        public static bool BelowNeighborCheck(Dictionary<int, HashSet<int>> currentStateOfWorld, int iterationRows, int rows, int iterationCols, int cols)
+//        {
+//            var row = BelowCellRowCheck(iterationRows, rows);
+
+//            if (currentStateOfWorld.ContainsKey(row) && currentStateOfWorld[row].Contains(iterationCols))
+//            {
+//                return true;
+//            }
+//            return false;
+//        }
+//        public static bool BelowRightNeighborCheck(Dictionary<int, HashSet<int>> currentStateOfWorld, int iterationRows, int rows, int iterationCols, int cols)
+//        {
+//            var row = BelowCellRowCheck(iterationRows, rows);
+//            var column = RightCellColumnCheck(iterationCols, cols);
+
+//            if (currentStateOfWorld.ContainsKey(row) && currentStateOfWorld[row].Contains(column))
+//            {
+//                return true;
+//            }
+//            return false;
+//        }
+
+
+//        public static int AboveCellRowCheck(int iterationRows, int maxRows)
+//        {
+//            return iterationRows - 1 < 0 ? maxRows - 1 : iterationRows - 1;
+//        }
+//        public static int BelowCellRowCheck(int iterationRows, int maxRows)
+//        {
+//            return iterationRows + 1 == maxRows ? 0 : iterationRows + 1;
+//        }
+//        public static int LeftCellColumnCheck(int iterationCols, int maxColumns)
+//        {
+//            return iterationCols - 1 < 0 ? maxColumns - 1 : iterationCols - 1;
+//        }
+//        public static int RightCellColumnCheck(int iterationCols, int maxColumns)
+//        {
+//            return iterationCols + 1 == maxColumns ? 0 : iterationCols + 1;
 //        }
 //        public static void AddingElementToDictionary(ref Dictionary<int, bool[]> currentStateOfWorld, int index, bool[] arr)
 //        {
@@ -106,53 +198,6 @@
 //                    currentStateOfWorld.Add(index, arr);
 //                }
 //            }
-//        }
-//        public static int leet()
-//        {
-//            int[] people = new int[] { 3, 5, 3, 4 };
-//            int limit = 5;
-//            Array.Sort(people);
-//            int boatCount = 0;
-//            int i = people.Count() - 1;
-//            Dictionary<int, bool> peopleStatus = new Dictionary<int, bool>();
-
-//            for (int j = 0; j < people.Count(); j++)
-//            {
-//                peopleStatus.Add(j, false);
-//            }
-//            while (i >= 0)
-//            {
-//                if (!peopleStatus[i])
-//                {
-//                    int weightDiff = limit - people[i];
-//                    if (weightDiff == 0)
-//                    {
-//                        boatCount = boatCount + 1;
-//                    }
-//                    else
-//                    {
-//                        int sumWeight = 0;
-//                        for (int m = 0; m < people.Count(); m++)
-//                        {
-//                            sumWeight = sumWeight + people[m];
-//                            if (weightDiff > sumWeight)
-//                            {
-//                                peopleStatus[m] = true;
-//                            }
-//                            else
-//                            {
-//                                boatCount = boatCount + 1;
-//                                break;
-//                            }
-
-//                        }
-//                    }
-//                }
-//                peopleStatus[i] = true;
-//                i = i - 1;
-//            }
-//            return boatCount;
-
 //        }
 //    }
 //}

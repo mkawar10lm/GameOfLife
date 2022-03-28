@@ -91,7 +91,8 @@ namespace badlife.csharp
             {
                 for (int j = 0; j < universe.GetWidth(); j++)
                 {
-                    if (universe.GetUniverse()[i, j].State == CellState.cellstates.ALIVE)
+                    var cells = universe.GetUniverse();
+                    if (cells[i, j] != null && cells[i, j].State == CellState.cellstates.ALIVE)
                     {
                         return true;
                     }

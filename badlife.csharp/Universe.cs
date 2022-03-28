@@ -44,10 +44,13 @@ namespace badlife.csharp
             {
                 for (int col = 0; col < GetWidth(); col++)
                 {
-                    printedGrid.Append(cells[row, col].Symbol);
+                    if (cells[row, col] != null)
+                    {
+                        printedGrid.Append(cells[row, col].Symbol);
+                    }
                 }
             }
-            return printedGrid.ToString();
+            return printedGrid.Length > 0 ? printedGrid.ToString() : string.Empty;
         }
         private static CellState[,] CreateTheIntialUnivese(string stringRepOfUniverse)
         {
